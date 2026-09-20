@@ -1,0 +1,6 @@
+path: C:\Users\Administrador\Documents\8o Semestre\capstone\dataset_yolo
+train: images/train
+val: images/val
+names:
+  0: ampola_vazia
+  1: ampola_com_produto

@@ -3,3 +3,8 @@ numpy>=1.26
 scipy>=1.11
 scikit-image>=0.22
 
+# rotulagem (fase YOLO)
+labelImg>=1.8.6
+
+# treino (fase YOLO)
+ultralytics>=8.2
