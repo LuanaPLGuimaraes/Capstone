@@ -1,15 +1,8 @@
 """
 PASSO 1 — Detectar e contar ampolas na bandeja usando visao computacional
-CLASSICA (sem deep learning, sem OCR).
+CLASSICA
 
-Importante para o TCC: isso NAO e OCR. OCR (Tesseract etc.) serve para ler
-TEXTO em uma imagem — nao ha texto nas ampolas, entao OCR nao se aplica
-aqui. O que estamos fazendo e "visao computacional classica": tecnicas de
-processamento de imagem baseadas em regras (limiarizacao, morfologia,
-watershed), sem nenhum modelo treinado nem dataset rotulado. E a etapa
-antes de qualquer classificador.
-
-IDEIA (por que funciona nesta foto):
+IDEIA:
   Cada ampola tem uma tampa/anel PRETO numa das pontas, bem mais escura
   que o vidro e o fundo branco da bandeja. Isso da um contraste alto e
   facil de isolar so com limiar de intensidade.
@@ -33,8 +26,6 @@ Com --debug, tambem salva (prefixo = mesmo nome do --out):
     <out>_1_mascara_bruta.png     -> direto do threshold, antes de limpar
     <out>_2_mascara_limpa.png     -> depois de remover blobs de fundo
     <out>_3_watershed.png         -> cada blob final com uma cor diferente
-
-Use essas imagens pra decidir o que ajustar (guia completo no README.md).
 """
 import argparse
 from pathlib import Path
@@ -78,7 +69,7 @@ def mesclar_caixas_proximas(boxes, areas, sobreposicao_min=0.25, margem_juncao=6
     elas) numa unica caixa maior. `areas` e a area (em pixels) de cada
     caixa em `boxes`, na mesma ordem.
 
-    Duas regras BEM diferentes, de propósito:
+    Duas regras:
     1. Sobreposicao forte (IoU >= sobreposicao_min): sempre junta. E o
        caso "a mesma tampa foi detectada 2x, quase uma em cima da
        outra" — nunca e o caso de 2 tampas DIFERENTES (2 tampas reais
@@ -140,15 +131,7 @@ def detectar_tampas(
     """Retorna (boxes, debug) — boxes = lista de (x1,y1,x2,y2), uma por
     tampa detectada; debug = dict com as imagens intermediarias, uteis
     pra entender/ajustar os parametros.
-
-    Os parametros altura_min/altura_max, largura_min/largura_max,
-    preenchimento_min, intensidade_media_max e ignorar_borda sao filtros
-    EXTRAS (alem da area) pra descartar blobs que passaram no limiar de
-    escuridao mas nao tem cara de tampa de verdade — por exemplo, um
-    amontoado de graos escuros do produto. Por padrao eles vem
-    "desligados" (bem permissivos) pra nao mudar nada em quem ja estava
-    funcionando; ajuste-os olhando o --debug quando o limiar sozinho
-    nao for suficiente."""
+    """
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # 1) pixels bem escuros = candidatos a tampa (e tambem fundo escuro/ruido)
@@ -189,7 +172,7 @@ def detectar_tampas(
     # area — so o pedaco JUNTO tem o tamanho certo de uma tampa inteira.
     # Se filtrassemos por area antes de juntar, perderiamos a tampa
     # inteira (os 2 pedacos pequenos seriam descartados um por um).
-    # (Duas tampas DIFERENTES que soh encostam uma na outra nao sao
+    # (Duas tampas DIFERENTES que so encostam uma na outra nao sao
     # juntadas aqui — ver a explicacao dentro de mesclar_caixas_proximas.)
     caixas_unidas = mesclar_caixas_proximas(
         caixas_cruas,
@@ -199,7 +182,7 @@ def detectar_tampas(
         area_min_fragmento=area_min,
     )
 
-    # 6) SO AGORA filtra por area/formato/preenchimento/intensidade,
+    # 6) Agora filtra por area/formato/preenchimento/intensidade,
     # recalculando essas medidas em cima da caixa ja unida.
     h_img, w_img = gray.shape
     boxes = []

@@ -1,19 +1,9 @@
 """
 PASSO 2 — Detectar a AMPOLA INTEIRA (nao so a tampa), usando a grade.
 
-Por que nao detectamos o vidro direto: tentamos achar o contorno inteiro
-da ampola por bordas (Canny) e separar cada uma sozinha. Nao funcionou
-bem, como as ampolas ficam encostadas umas nas outras, o "limite" entre
-duas vizinhas nao fecha direito, e a segmentacao junta ampola com ampola
-ou corta uma ampola em pedacos por causa da textura do produto. Registrar
-isso importa: e uma tentativa que nao deu certo, e o motivo (objetos
-encostados sem borda solida entre eles) e uma limitacao conhecida de
-segmentar so por contorno.
-
 O que funciona: usar a tampa (que ja detectamos com confianca no passo 1)
 como ANCORA, e a regularidade da grade pra saber o tamanho da ampola.
 
-IDEIA:
   1. Detecta as tampas (reusa detectar_tampas.py).
   2. Agrupa tampas por LINHA (mesmo Y aproximado).
   3. Dentro de cada linha, mede a distancia entre tampas vizinhas. Como as
@@ -22,10 +12,6 @@ IDEIA:
   4. Cada tampa detectada vira uma caixa que comeca nela e se estende
      `pitch` pixels na direcao do corpo da ampola (nesta foto, pra
      esquerda — confira visualmente na sua, pode ser o contrario).
-
-Isso e valido pro CENARIO 1 (ampolas deitadas, mesma orientacao, mesmo
-que faltando algumas — grade incompleta). Nao serve pro cenario de
-ampolas espalhadas/giradas, isso fica pra depois.
 
 Uso:
     python detectar_ampolas.py --image foto.jpg --out resultado_ampolas.png --pitch-direcao esquerda
@@ -73,8 +59,6 @@ def medir_pitch(linhas, pitch_min=100, pitch_max=350):
     ser a mesma tampa detectada em duas partes (nao separou direito no
     passo 1); muito longe costuma ser um "buraco" (tampa que faltou),
     nao o espacamento real.
-
-    Ajuste pitch_min/pitch_max pra sua foto se a mediana parecer estranha.
     """
     distancias = []
     for linha in linhas:

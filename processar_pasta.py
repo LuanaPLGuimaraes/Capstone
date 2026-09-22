@@ -1,11 +1,5 @@
 """
-PASSO 2.5 — Rodar detectar_ampolas.py (ampola INTEIRA, nao so a tampa) em
-varias fotos de uma vez, igual o processar_pasta.py faz pra tampa.
-
-Por que esse arquivo e diferente do processar_pasta.py: aquele so chama
-detectar_tampas() (etapa 1, so a tampa). Esse aqui chama tambem os passos
-de agrupar por linha, medir o espacamento da grade (pitch) e expandir
-cada tampa pra caixa da ampola inteira (etapa 2, do detectar_ampolas.py).
+PASSO 2.5 — Rodar detectar_ampolas.py em varias fotos de uma vez
 
 Uso:
     python processar_pasta.py --input dataset/ampolas/ --out resultados_ampolas/ --intensidade-media-max 27
@@ -85,8 +79,7 @@ def main():
             pitch = medir_pitch(linhas, pitch_min=args.pitch_min, pitch_max=args.pitch_max)
         except ValueError:
             # nao deu pra medir o espacamento da grade nessa foto (ex: tampas
-            # demais faltando, ou parametros nao calibrados pra ela) — pula
-            # sem travar o lote inteiro, mas avisa qual foto foi
+            # demais faltando, ou parametros nao calibrados pra ela) 
             print(f"{img_path.name:40s} {len(boxes_tampa):>8d} {'SEM PITCH':>8s}")
             vis = img.copy()
             for (x1, y1, x2, y2) in boxes_tampa:

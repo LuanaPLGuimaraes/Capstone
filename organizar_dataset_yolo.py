@@ -12,9 +12,6 @@ treino/validacao numa proporcao configuravel, e COPIA pra:
     <out>/labels/val/*.txt
     <out>/data.yaml           <- arquivo de config que o YOLO le pra treinar
 
-Se achar imagem sem .txt (ainda nao revisada) ou .txt sem imagem
-(par quebrado), avisa e NAO inclui esse arquivo no dataset.
-
 Uso:
     python organizar_dataset_yolo.py --input dataset\\ampolas --out dataset_yolo --val-frac 0.2
 """

@@ -6,8 +6,7 @@ via detectar_ampolas.py) contra o gabarito ja anotado (rotulos YOLO) em
 dataset/ampolas.
 
 So valida LOCALIZACAO/CONTAGEM (pareia caixa detectada com caixa do
-gabarito por IoU), nao classificacao presenca/ausencia -- vocês nem
-chegaram a tentar isso no classico, entao nao faz sentido medir aqui.
+gabarito por IoU), nao classificacao presenca/ausencia de ampola.
 
 Rode este arquivo na raiz do projeto (mesma pasta de detectar_tampas.py
 e detectar_ampolas.py), com: python validacao_classico.py
@@ -28,7 +27,6 @@ from detectar_ampolas import agrupar_por_linha, medir_pitch, expandir_para_ampol
 PASTA_DATASET = "dataset/ampolas"   # jpg e txt (formato YOLO) juntos nessa pasta
 IOU_THRESHOLD = 0.5
 
-# Parametros calibrados do pipeline (os do teste4_refina3 -- confira se bate)
 PARAMS_TAMPA = dict(
     dark_threshold=45,
     area_min=500,
@@ -41,12 +39,12 @@ PARAMS_TAMPA = dict(
     largura_min=0,
     largura_max=10_000,
     preenchimento_min=0.0,
-    intensidade_media_max=27,   # AJUSTAR se o valor final usado no teste4_refina3 foi outro
+    intensidade_media_max=27,   
     ignorar_borda=False,
 )
 TOLERANCIA_Y = 25
 PITCH_MIN, PITCH_MAX = 100, 350
-PITCH_DIRECAO = "esquerda"   # AJUSTAR: confira pra que lado o corpo da ampola se estende nas suas fotos
+PITCH_DIRECAO = "esquerda"   
 
 
 def ler_rotulos_yolo(caminho_txt, largura_img, altura_img):

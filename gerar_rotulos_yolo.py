@@ -1,6 +1,6 @@
 """
 FASE YOLO — passo 1.5: pre-rotular as fotos usando o pipeline classico,
-pra voce so CONFERIR e CORRIGIR no LabelImg em vez de desenhar ~70
+CONFERIR e CORRIGIR no LabelImg em vez de desenhar ~70
 caixas por foto do zero.
 
 O que esse script faz, por foto:
@@ -11,12 +11,8 @@ O que esse script faz, por foto:
   3. Salva um arquivo <nome_da_foto>.txt do LADO da foto original, com
      uma linha por ampola: "<classe> <centro_x> <centro_y> <largura> <altura>".
   4. Toda caixa nasce marcada com a classe --classe-padrao (por padrao,
-     0 = ampola_vazia) — porque o pipeline classico NAO sabe distinguir
-     vazia de com produto, so localiza. Voce troca a classe no LabelImg
-     nas que tiverem produto.
-
-Isso NAO sobrescreve fotos que ja tem um .txt do lado (pra nao perder
-rotulo que voce ja corrigiu a mao) — a nao ser que passe --sobrescrever.
+     0 = ampola_vazia) — porque o pipeline classico nao sabe distinguir
+     vazia de com produto, so localiza. 
 
 Uso:
     python gerar_rotulos_yolo.py --input dataset/fotos --intensidade-media-max 27
@@ -40,8 +36,7 @@ def caixa_para_yolo(box, largura_img, altura_img):
     """(x1,y1,x2,y2) em pixels -> (centro_x, centro_y, largura, altura)
     em fracao 0-1 da imagem, que e o que o formato YOLO espera."""
     x1, y1, x2, y2 = box
-    # trava a caixa dentro dos limites da imagem (a expansao pelo pitch
-    # pode ultrapassar a borda perto das pontas da bandeja)
+    # trava a caixa dentro dos limites da imagem 
     x1 = max(0, min(x1, largura_img))
     x2 = max(0, min(x2, largura_img))
     y1 = max(0, min(y1, altura_img))
@@ -61,7 +56,7 @@ def main():
                      help=f"Indice da classe que toda caixa nasce marcada (0={CLASSES[0]}, 1={CLASSES[1]})")
     ap.add_argument("--sobrescrever", action="store_true",
                      help="Regera o .txt mesmo se ja existir (CUIDADO: perde correcoes manuais ja feitas)")
-    # mesmos parametros calibraveis do pipeline classico de sempre
+    # mesmos parametros calibraveis do pipeline classico 
     ap.add_argument("--dark-threshold", type=int, default=45)
     ap.add_argument("--area-min", type=int, default=500)
     ap.add_argument("--area-max", type=int, default=2300)
