@@ -1,0 +1,6 @@
+path: C:\Users\Administrador\Documents\8o Semestre\capstone\final\dataset_yolo\blister_bloco
+train: images/train
+val: images/val
+names:
+  0: blister_bloco_vazio
+  1: blister_bloco_com_produto

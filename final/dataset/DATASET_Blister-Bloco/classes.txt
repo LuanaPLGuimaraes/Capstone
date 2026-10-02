@@ -1,0 +1,2 @@
+blister_bloco_vazio
+blister_bloco_com_produto
