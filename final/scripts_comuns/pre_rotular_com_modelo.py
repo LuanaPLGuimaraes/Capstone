@@ -13,6 +13,8 @@ Uso:
 Validar depois com labelImg:
 cd ../final/scripts_comuns
 labelImg ../dataset/DATASET_ampola ../dataset/DATASET_ampola/classes.txt
+
+labelImg ../dataset/DATASET_Blister-org2 ../dataset/DATASET_Blister-org2/classes.txt
 """
 import argparse
 from pathlib import Path
