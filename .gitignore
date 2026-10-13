@@ -1,0 +1,33 @@
+# Ambientes virtuais
+.venv/
+producao/.venv/
+
+# Editor
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+
+# Dataset derivado — regenerável a partir de final/dataset/ via
+# organizar_dataset.py; versionar duplica as fotos e gera diff gigante
+# toda vez que o split treino/val muda
+final/dataset_yolo/
+
+# Cache binário do YOLO (gerado automaticamente a cada treino/validação)
+*.cache
+
+# Saída visual de cada rodada de treino — debug, não precisa pra
+# reproduzir nem pra rodar em produção; o que importa manter é
+# weights/best.pt + results.csv/png + confusion_matrix.png + args.yaml
+final/modelos/*/*/train_batch*.jpg
+final/modelos/*/*/val_batch*.jpg
+final/modelos/*/*/labels.jpg
+final/modelos/*/*/weights/last.pt
+
+# Pacote zipado de deploy — redundante com a pasta producao/ já versionada
+producao.zip
+
+# Scratch de teste manual
+final/scripts_comuns/teste.png
+final/scripts_comuns/teste_inspecionado.png
