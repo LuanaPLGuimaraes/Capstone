@@ -26,7 +26,7 @@ então ordem errada = classe errada, sem erro nenhum na hora). Só passe
 
 Uso (rodando de dentro de final/scripts_comuns):
     python organizar_dataset.py --input ../dataset/DATASET_ampola --out ../dataset_yolo/ampola --val-frac 0.2
-    python organizar_dataset.py --input ../dataset/DATASET_Blister-Bloco --out ../dataset_yolo/blister_bloco
+    python organizar_dataset.py --input ../dataset/DATASET_Blister_992 --out ../dataset_yolo/blister_992 --val-frac 0.2
 
     # só se precisar forçar nomes diferentes do classes.txt:
     python organizar_dataset.py --input ../dataset/DATASET_ampola --out ../dataset_yolo/ampola --classes ampola_vazia,ampola_com_produto

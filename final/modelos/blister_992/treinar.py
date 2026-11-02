@@ -23,10 +23,16 @@ Uso (rodando de dentro de final/modelos/<tipo>, ex: final/modelos/blister_992):
     python treinar.py
     python treinar.py --epochs 150
     python treinar.py --nome treino_completo_v2
+    python treinar.py --device cpu          # força CPU mesmo tendo GPU
+
+GPU: usa a placa NVIDIA automaticamente se o PyTorch do venv tiver CUDA
+(confere com: python -c "import torch; print(torch.cuda.is_available())").
+Se aparecer "CPU" no cabeçalho, o torch instalado é a versão só-CPU.
 """
 import argparse
 from pathlib import Path
 
+import torch
 from ultralytics import YOLO
 
 AQUI = Path(__file__).resolve().parent               # final/modelos/<tipo> — ex: final/modelos/blister_992
@@ -42,10 +48,12 @@ def main():
     ap.add_argument("--modelo-base", default=str(MODELO_BASE_PADRAO),
                      help="Pesos de partida — yolov8n.pt pré-treinado no COCO; "
                           "pra continuar de um treino anterior, aponta pro best.pt dele")
-    ap.add_argument("--epochs", type=int, default=100, help="Épocas de treino de verdade")
+    ap.add_argument("--epochs", type=int, default=200, help="Épocas de treino de verdade")
     ap.add_argument("--imgsz", type=int, default=640, help="Tamanho da imagem de entrada")
     ap.add_argument("--batch", type=int, default=-1,
                      help="Tamanho do batch. -1 deixa o Ultralytics escolher pela memória disponível")
+    ap.add_argument("--device", default="0" if torch.cuda.is_available() else "cpu",
+                     help="'0' = primeira GPU NVIDIA, 'cpu' = processador. Padrão: GPU se houver")
     args = ap.parse_args()
 
     data_yaml = Path(args.data).resolve()
@@ -58,6 +66,10 @@ def main():
     print(f"data.yaml:   {data_yaml}")
     print(f"Salvando em: {AQUI / args.nome}")
     print(f"Modelo base: {args.modelo_base}  |  epochs={args.epochs}  imgsz={args.imgsz}")
+    if args.device == "cpu":
+        print("Dispositivo: CPU (mais lento — veja a nota sobre GPU no topo do arquivo)")
+    else:
+        print(f"Dispositivo: GPU {args.device} ({torch.cuda.get_device_name(int(args.device))})")
     print("-" * 60)
 
     modelo = YOLO(args.modelo_base)
@@ -66,6 +78,7 @@ def main():
         epochs=args.epochs,
         imgsz=args.imgsz,
         batch=args.batch,
+        device=args.device,
         project=str(AQUI),   # já é absoluto, pois AQUI vem de .resolve()
         name=args.nome,
     )
