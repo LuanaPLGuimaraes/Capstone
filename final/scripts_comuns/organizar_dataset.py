@@ -108,6 +108,10 @@ def main():
     val_pares = pares[:n_val]
     train_pares = pares[n_val:]
 
+
+    if out_dir.exists():
+        shutil.rmtree(out_dir)
+
     for split_nome, split_pares in [("train", train_pares), ("val", val_pares)]:
         (out_dir / "images" / split_nome).mkdir(parents=True, exist_ok=True)
         (out_dir / "labels" / split_nome).mkdir(parents=True, exist_ok=True)
