@@ -48,7 +48,7 @@ def main():
     ap.add_argument("--modelo-base", default=str(MODELO_BASE_PADRAO),
                      help="Pesos de partida — yolov8n.pt pré-treinado no COCO; "
                           "pra continuar de um treino anterior, aponta pro best.pt dele")
-    ap.add_argument("--epochs", type=int, default=200, help="Épocas de treino de verdade")
+    ap.add_argument("--epochs", type=int, default=100, help="Épocas de treino de verdade")
     ap.add_argument("--imgsz", type=int, default=640, help="Tamanho da imagem de entrada")
     ap.add_argument("--batch", type=int, default=-1,
                      help="Tamanho do batch. -1 deixa o Ultralytics escolher pela memória disponível")
