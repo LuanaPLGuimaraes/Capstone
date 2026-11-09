@@ -1,2 +1,0 @@
-Imagens com fundo preto salvas automaticamente pelo Flat Field Correction_2018_fundo_preto.vi
-(uma por imagem da pasta embalagens, com o mesmo nome do arquivo de entrada).

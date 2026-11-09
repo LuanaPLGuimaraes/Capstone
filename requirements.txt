@@ -1,10 +1,5 @@
-opencv-python-headless>=4.9
-numpy>=1.26
-scipy>=1.11
-scikit-image>=0.22
-
-# rotulagem (fase YOLO)
-labelImg>=1.8.6
-
-# treino (fase YOLO)
-ultralytics>=8.2
+# Ambiente completo de desenvolvimento (as três etapas do TCC).
+# Para instalar só uma etapa: pip install -r <etapa>/requirements.txt
+-r intermediario/requirements.txt
+-r final/requirements.txt
+-r producao/requirements.txt

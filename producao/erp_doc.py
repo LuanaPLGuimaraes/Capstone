@@ -39,7 +39,7 @@ Assim como no main.py: qualquer erro vira ERRADO no stdout e o detalhe
 vai para o stderr (só para debug manual).
 
 API (informada pela equipe de TI):
-    GET https://www.sistemasbaumer.com.br/api/OrdemProducao/<numero_ordem>
+    GET <ERP_API_URL, com o número da ordem em {numero_da_ordem}>
     Cabeçalho: X-Api-Key: <chave>
     Resposta 200 (exemplo real, ordem 979993201):
         {"nr_ord_prod": 979993201, "codigo_item": "520.10",
@@ -50,11 +50,12 @@ API (informada pela equipe de TI):
 
 CHAVE DA API — NÃO fica neste arquivo (o repositório é público). Ela é
 lida, nesta ordem:
-    1) variável de ambiente ERP_API_KEY; ou
-    2) arquivo erp_config.json ao lado deste script (ignorado pelo Git):
+    1) variável de ambiente ERP_API_KEY, que pode vir de um arquivo .env
+       (ignorado pelo Git) em producao/ ou na raiz do projeto. Modelo em
+       .env.example; precisa ser criado em cada computador; ou
+    2) arquivo legado erp_config.json ao lado deste script:
            {"api_chave": "<chave enviada pela TI>"}
-       Como esse arquivo não vai para o Git, ele precisa ser criado à
-       mão (com o conteúdo acima) em cada computador que rodar o código.
+ERP_API_URL (obrigatória) e ERP_API_TIMEOUT_S (opcional) também vêm do .env.
 """
 import json
 import os
@@ -66,10 +67,14 @@ from datetime import datetime
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
+try:
+    from dotenv import load_dotenv
+except ImportError:  # sem o pacote, ainda valem as variáveis de ambiente do sistema
+    load_dotenv = None
+
 # ============================================================
-# CONFIGURAÇÃO DA API (informada pela TI)
+# CONFIGURAÇÃO DA API (URL e chave vêm do .env)
 # ============================================================
-API_URL_ORDEM = "https://www.sistemasbaumer.com.br/api/OrdemProducao/{numero_da_ordem}"
 API_CABECALHO_CHAVE = "X-Api-Key"
 API_TIMEOUT_S = 10  # segundos esperando a resposta antes de desistir
 
@@ -85,6 +90,13 @@ ARQUIVO_CONFIG = AQUI / "erp_config.json"  # guarda a chave; fora do Git
 PASTA_REGISTROS = AQUI / "registros"       # estado das ordens em andamento
 PASTA_RELATORIOS = AQUI / "relatorios"     # txts gerados
 FORMATO_HORA = "%d/%m/%Y %H:%M:%S"
+
+if load_dotenv:
+    # producao/.env tem prioridade sobre o da raiz; variáveis já definidas
+    # no sistema têm prioridade sobre ambos. utf-8-sig: aceita o BOM do
+    # Bloco de Notas.
+    load_dotenv(AQUI / ".env", encoding="utf-8-sig")
+    load_dotenv(AQUI.parent / ".env", encoding="utf-8-sig")
 
 
 # ------------------------------------------------------------
@@ -105,8 +117,7 @@ def _ler_chave_api() -> str:
     if chave:
         return chave
     if not ARQUIVO_CONFIG.exists():
-        raise RuntimeError(f"Chave da API não configurada: crie {ARQUIVO_CONFIG} "
-                           f'com o conteúdo {{"api_chave": "<chave>"}} ou defina ERP_API_KEY')
+        raise RuntimeError("Chave da API não configurada: defina ERP_API_KEY no .env (modelo em .env.example)")
     # utf-8-sig: aceita o arquivo mesmo se o Bloco de Notas salvar com BOM
     config = json.loads(ARQUIVO_CONFIG.read_text(encoding="utf-8-sig"))
     chave = str(config.get("api_chave", "")).strip()
@@ -144,8 +155,12 @@ def consultar_ordem(numero_ordem: str) -> dict:
     {'lote', 'ordem', 'codigo_item', 'descricao_item', 'quantidade'}."""
     numero_ordem = _validar_numero_ordem(numero_ordem)
     chave = _ler_chave_api()
+    timeout_s = float(os.environ.get("ERP_API_TIMEOUT_S") or API_TIMEOUT_S)
+    url_ordem = os.environ.get("ERP_API_URL", "").strip()
+    if not url_ordem:
+        raise RuntimeError("URL da API não configurada: defina ERP_API_URL no .env (modelo em .env.example)")
 
-    url = API_URL_ORDEM.format(numero_da_ordem=urllib.parse.quote(numero_ordem))
+    url = url_ordem.format(numero_da_ordem=urllib.parse.quote(numero_ordem))
     requisicao = urllib.request.Request(
         url,
         method="GET",
@@ -153,7 +168,7 @@ def consultar_ordem(numero_ordem: str) -> dict:
     )
 
     try:
-        with urllib.request.urlopen(requisicao, timeout=API_TIMEOUT_S) as resposta:
+        with urllib.request.urlopen(requisicao, timeout=timeout_s) as resposta:
             # parse_float=Decimal: mantém "49.0000" exato para a checagem de inteiro
             dados = json.loads(resposta.read().decode("utf-8"), parse_float=Decimal)
     except urllib.error.HTTPError as erro:
@@ -161,7 +176,7 @@ def consultar_ordem(numero_ordem: str) -> dict:
         if erro.code == 404:
             motivo = "ordem não encontrada no ERP"
         elif erro.code == 401:
-            motivo = "chave da API recusada (confira erp_config.json)"
+            motivo = "chave da API recusada (confira ERP_API_KEY no .env)"
         elif erro.code == 400:
             motivo = "número de ordem recusado pela API"
         else:
@@ -171,7 +186,7 @@ def consultar_ordem(numero_ordem: str) -> dict:
     except urllib.error.URLError as erro:
         raise RuntimeError(f"Não consegui conectar na API: {erro.reason}") from erro
     except TimeoutError as erro:
-        raise RuntimeError(f"API não respondeu em {API_TIMEOUT_S}s") from erro
+        raise RuntimeError(f"API não respondeu em {timeout_s}s") from erro
     except json.JSONDecodeError as erro:
         raise RuntimeError("Resposta da API não é um JSON válido") from erro
 

@@ -8,8 +8,8 @@ dataset/ampolas.
 So valida LOCALIZACAO/CONTAGEM (pareia caixa detectada com caixa do
 gabarito por IoU), nao classificacao presenca/ausencia de ampola.
 
-Rode este arquivo na raiz do projeto (mesma pasta de detectar_tampas.py
-e detectar_ampolas.py), com: python validacao_classico.py
+Rode a partir da raiz do repositorio, com:
+    python -m intermediario.validacao_classico
 """
 
 import os
@@ -24,7 +24,7 @@ from intermediario.detectar_ampolas import agrupar_por_linha, medir_pitch, expan
 # ---------------------------------------------------------------------------
 # Configuracao
 # ---------------------------------------------------------------------------
-PASTA_DATASET = "dataset/ampolas"   # jpg e txt (formato YOLO) juntos nessa pasta
+PASTA_DATASET = str(Path(__file__).resolve().parent / "dataset" / "ampolas")   # jpg e txt (formato YOLO) juntos nessa pasta
 IOU_THRESHOLD = 0.5
 
 PARAMS_TAMPA = dict(

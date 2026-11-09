@@ -1,2 +1,6 @@
+# Pacote mínimo para o computador do LabVIEW.
+# O PyTorch vem junto com o ultralytics.
 ultralytics==8.4.150
-opencv-python-headless
+opencv-python==5.0.0.93
+numpy==2.5.3
+python-dotenv==1.2.4

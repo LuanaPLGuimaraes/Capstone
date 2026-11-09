@@ -1,0 +1,6 @@
+# Treino e validação dos modelos por tipo de embalagem.
+# Para treinar em GPU NVIDIA, instale antes o PyTorch com CUDA:
+# https://pytorch.org/get-started/locally/
+ultralytics==8.4.150
+opencv-python==5.0.0.93
+PyYAML==6.0.3

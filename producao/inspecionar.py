@@ -1,5 +1,5 @@
 """
-FINAL — Inspeciona uma foto de bandeja: roda o modelo YOLO do tipo
+PRODUÇÃO — Inspeciona uma foto de bandeja: roda o modelo YOLO do tipo
 indicado, devolve a MESMA foto com caixas VERMELHAS só ao redor das
 embalagens vazias, e devolve as contagens (quantas embalagens no
 total, quantas vazias). É a peça que a função orquestradora (chamada
@@ -55,7 +55,7 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 
-AQUI = Path(__file__).resolve().parent  # final/scripts_comuns
+AQUI = Path(__file__).resolve().parent  # producao/
 COR_VAZIA = (0, 0, 255)  # vermelho, BGR (OpenCV usa BGR, não RGB)
 
 _MODELOS_CACHE = {}  # {tipo: (modelo YOLO, classe_id_critica, classe_nome_critica)}
@@ -287,7 +287,7 @@ def main():
                      help="Confiança mínima pra contar as demais embalagens (default 0.25)")
     ap.add_argument("--saida", default=None, help="Caminho da imagem de saída (default: <imagem>_inspecionado.<ext>)")
     ap.add_argument("--pesos", default=None,
-                     help="Override do caminho dos pesos (default: final/modelos/<tipo>/treino_completo/weights/best.pt)")
+                     help="Override do caminho dos pesos (default: modelos/<tipo>/best.pt)")
     args = ap.parse_args()
 
     r = inspecionar_imagem(

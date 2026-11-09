@@ -1,0 +1,7 @@
+# Visão clássica, rotulagem e primeiros testes com YOLO.
+opencv-python==5.0.0.93
+numpy==2.5.3
+scipy==1.18.1
+scikit-image==0.26.0
+ultralytics==8.4.150
+labelImg==1.8.6
