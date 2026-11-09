@@ -31,3 +31,8 @@ producao.zip
 # Scratch de teste manual
 final/scripts_comuns/teste.png
 final/scripts_comuns/teste_inspecionado.png
+# Integração ERP: chave da API (repositório público — NUNCA versionar)
+# e dados de produção gerados em tempo de execução
+producao/erp_config.json
+producao/registros/
+producao/relatorios/
