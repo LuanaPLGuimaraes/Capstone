@@ -1,9 +1,7 @@
 """
-validacao_classico.py
-
-Mini script de validacao da abordagem classica (deteccao da ampola inteira,
+VALIDACAO — Mede a abordagem classica (deteccao da ampola inteira,
 via detectar_ampolas.py) contra o gabarito ja anotado (rotulos YOLO) em
-dataset/ampolas.
+intermediario/dataset/ampolas.
 
 So valida LOCALIZACAO/CONTAGEM (pareia caixa detectada com caixa do
 gabarito por IoU), nao classificacao presenca/ausencia de ampola.
@@ -39,12 +37,12 @@ PARAMS_TAMPA = dict(
     largura_min=0,
     largura_max=10_000,
     preenchimento_min=0.0,
-    intensidade_media_max=27,   
+    intensidade_media_max=27,
     ignorar_borda=False,
 )
 TOLERANCIA_Y = 25
 PITCH_MIN, PITCH_MAX = 100, 350
-PITCH_DIRECAO = "esquerda"   
+PITCH_DIRECAO = "esquerda"
 
 
 def ler_rotulos_yolo(caminho_txt, largura_img, altura_img):

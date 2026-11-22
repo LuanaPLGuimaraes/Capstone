@@ -1,12 +1,12 @@
 # Etapa intermediária: visão computacional clássica + YOLO
 
-Todos os comandos abaixo rodam **a partir da raiz do repositório**.
-
 Fase preliminar do Capstone: detectar/contar ampolas numa bandeja e classificar
 presença/ausência de produto, a partir de fotos com câmera e ângulo
 fixos. Duas abordagens foram desenvolvidas em sequência: primeiro visão
 computacional clássica (sem treino), depois um modelo treinado (YOLO),
 motivado pelas limitações encontradas na primeira.
+
+Todos os comandos abaixo rodam **a partir da raiz do repositório**.
 
 ## Conceitos
 
@@ -15,9 +15,16 @@ manualmente olhando o resultado — não existe fase de treinamento. As 58
 fotos do dataset servem, nessa etapa, para testar se os parâmetros
 generalizam entre fotos, não para treinar nada.
 
-## Estrutura do repositório
+## Conteúdo da pasta
 
-| Arquivo | Etapa | O que faz |
+| Pasta | Conteúdo |
+|---|---|
+| `dataset/ampolas/` | 58 fotos de bandejas de ampolas com os rótulos YOLO revisados |
+| `dataset_yolo/` | Mesmas fotos separadas em treino (46) e validação (12) |
+| `testes_classico/` | Saídas do pipeline clássico: imagens de depuração de cada passo e o lote completo (`resultados_ampolas/`) |
+| `runs/` | Primeiros treinos YOLO (`teste_rapido`, `treino_completo`) e uma predição de exemplo (`predicao/`) |
+
+| Script | Etapa | O que faz |
 |---|---|---|
 | `detectar_tampas.py` | Clássico — Passo 1 | Detecta a tampa/anel escuro de cada ampola (limiar + watershed) |
 | `detectar_ampolas.py` | Clássico — Passo 2 | Usa a tampa como âncora e o espaçamento da grade (pitch) pra desenhar a caixa da ampola inteira |
@@ -70,7 +77,7 @@ python -m intermediario.detectar_ampolas --image foto_exemplo.jpg --out resultad
 ### Rodar em lote
 
 ```bash
-python -m intermediario.processar_pasta --input caminho/para/suas_70_fotos/ --out resultados/
+python -m intermediario.processar_pasta --input intermediario/dataset/ampolas --out resultados/ --intensidade-media-max 27
 ```
 
 Imprime a contagem (tampa + ampola) de cada foto e salva a versão
@@ -86,7 +93,7 @@ Roda o pipeline clássico contra os rótulos já revisados (formato YOLO)
 e calcula Precisão/Recall de localização (pareamento por IoU ≥ 0,5).
 Mede só se a caixa foi encontrada no lugar certo — não mede
 classificação vazia/com produto (a abordagem clássica não distingue
-isso; ver Etapa 2). 
+isso; ver Etapa 2).
 
 ## Guia de parâmetros — o que mexer quando
 
@@ -121,7 +128,7 @@ Fluxo adotado:
    classifica.
 
    ```bash
-   python -m intermediario.gerar_rotulos_yolo --input intermediario/dataset/fotos --intensidade-media-max 27
+   python -m intermediario.gerar_rotulos_yolo --input intermediario/dataset/ampolas --intensidade-media-max 27
    ```
 
 2. **Revisão manual no LabelImg** — corrige posição/tamanho e marca a
@@ -135,11 +142,31 @@ Fluxo adotado:
    python -m intermediario.organizar_dataset_yolo --input intermediario/dataset/ampolas --out intermediario/dataset_yolo --val-frac 0.2
    ```
 
-4. **Treino** — `yolo detect train data=intermediario/dataset_yolo/data.yaml model=final/scripts_comuns/yolov8n.pt ...`
+4. **Treino** — YOLOv8n pré-treinado no COCO, imagens de 640 px. O
+   `project` precisa ser um caminho absoluto; com caminho relativo o
+   Ultralytics salva dentro de `runs/detect/`.
 
-## Status atual / próximos passos
+   ```powershell
+   yolo detect train data=intermediario/dataset_yolo/data.yaml model=final/scripts_comuns/yolov8n.pt epochs=100 imgsz=640 project=$PWD\intermediario\runs name=treino_completo
+   ```
 
-- Etapa 1 (clássica) concluída e documentada, incluindo a limitação de
-  generalização do threshold que motivou a Etapa 2.
-- Etapa 2 (YOLO): dataset rotulado e organizado; treino em andamento,
-  mas resultados preliminares já estão dispostos em `intermediario/runs/detect/runs/detect/treino_completo`.
+## Resultados
+
+| Treino | Épocas | Precision | Recall | mAP50 | mAP50-95 |
+|---|---:|---:|---:|---:|---:|
+| `runs/teste_rapido` | 10 | 0,219 | 0,996 | 0,608 | 0,360 |
+| `runs/treino_completo` | 100 | 0,970 | 0,986 | 0,993 | 0,715 |
+
+Métricas da última época no conjunto de validação (12 fotos), lidas do
+`results.csv` de cada treino.
+
+## Conclusão da etapa
+
+- A abordagem clássica localiza as ampolas quando os parâmetros são bem
+  calibrados, mas o limiar de intensidade não generaliza entre fotos com
+  iluminação diferente, e o método não distingue ampola vazia de ampola com
+  produto.
+- Com 58 fotos rotuladas, o YOLO aprendeu a localizar e classificar as
+  ampolas ao mesmo tempo, sem ajuste manual por foto. Esse resultado definiu a
+  abordagem da [etapa final](../final/README.md), que ampliou o dataset e
+  treinou um modelo para cada tipo de embalagem.

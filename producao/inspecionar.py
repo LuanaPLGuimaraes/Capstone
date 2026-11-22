@@ -6,10 +6,8 @@ total, quantas vazias). É a peça que a função orquestradora (chamada
 pelo LabVIEW depois que ele tira e salva a foto) usa pra apontar pro
 operador quais embalagens parecem vazias.
 
-Script genérico, igual ao organizar_dataset.py — não um por tipo como
-treinar.py/validar.py, porque a lógica aqui (carrega o modelo do tipo,
-desenha a classe crítica) é idêntica pra qualquer produto; só muda o
---tipo.
+Script genérico: a lógica (carregar o modelo do tipo, desenhar a
+classe crítica) é idêntica pra qualquer produto; só muda o --tipo.
 
 PACOTE DE PRODUÇÃO: pra levar isso pro computador do LabVIEW, não
 precisa de organizar_dataset.py/treinar.py/validar.py nem das pastas de
@@ -109,7 +107,7 @@ def _rodar_e_marcar(img_bgr, modelo, classe_id, conf_vazia, conf_padrao):
     resultado = modelo.predict(img_bgr, conf=conf_minima, verbose=False)[0]
 
     espessura = max(2, round(w / 300))
-    escala_fonte = max(0.4, w / 1500)  # reduzido — antes era w/1000, ficava grande demais
+    escala_fonte = max(0.4, w / 1500)
     espessura_texto = max(1, espessura - 1)  # texto um pouco mais fino que a borda da caixa
     n_vazias = 0
     n_outras = 0
@@ -276,6 +274,7 @@ def inspecionar_array_planos(plano_r, plano_g, plano_b, tipo: str, altura: int, 
         "total_vazias": n_vazias,
         "total_outras": n_outras,
     }
+
 
 def main():
     ap = argparse.ArgumentParser()

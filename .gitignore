@@ -32,6 +32,10 @@ Desktop.ini
 # Peso-base que o Ultralytics baixa ao rodar da raiz; o oficial do
 # projeto fica em final/scripts_comuns/yolov8n.pt
 /yolov8n.pt
+# Pasta padrão do Ultralytics quando --project não é absoluto
+/runs/
+# Último checkpoint de cada treino (só o best.pt é versionado)
+**/weights/last.pt
 
 # ------------------------------------------------------------
 # Etapa final
@@ -44,7 +48,6 @@ final/dataset_yolo/
 final/modelos/*/*/train_batch*.jpg
 final/modelos/*/*/val_batch*.jpg
 final/modelos/*/*/labels.jpg
-final/modelos/*/*/weights/last.pt
 
 # Scratch de teste manual
 final/scripts_comuns/teste.png

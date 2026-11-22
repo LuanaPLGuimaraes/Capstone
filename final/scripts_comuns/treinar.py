@@ -5,12 +5,12 @@ Script único para todos os tipos: --tipo tem que ser exatamente igual
 ao nome da pasta em final/dataset_yolo/<tipo>/ (o que o
 organizar_dataset.py gerou) — mesma convenção usada em todo o resto do
 projeto (inspecionar.py, main.py). Os resultados ficam em
-final/modelos/<tipo>/.
+final/modelos/<tipo>/<nome>/.
 
-Pra retreinar (mais fotos rotuladas, dataset mudou, etc.): roda esse
-MESMO comando de novo, sem editar nada. Cada rodada cria uma subpasta
-nova (o Ultralytics numera sozinho: treino_completo, treino_completo2,
-...) — treinos antigos não são sobrescritos, fica um histórico.
+Pra retreinar (mais fotos rotuladas, dataset mudou, etc.): roda o
+comando de novo com outro --nome (ex.: treino_completo_v2). Se o nome
+já existir, o Ultralytics numera sozinho (treino_completo2, ...) —
+treinos antigos não são sobrescritos, fica um histórico.
 
 O --project do treino é sempre resolvido pra caminho ABSOLUTO antes de
 usar (Nota técnica 6.5 do registro de testes) — não cai na pasta

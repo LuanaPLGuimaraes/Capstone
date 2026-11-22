@@ -1,5 +1,5 @@
 """
-Valida o modelo treinado de UM tipo. Três relatórios:
+Valida o modelo treinado de UM tipo. Quatro relatórios:
 
 1. Resumo geral (precision/recall/mAP por classe, no ponto de operação
    padrão do Ultralytics) — visão geral de como o treino foi.
@@ -16,19 +16,19 @@ Valida o modelo treinado de UM tipo. Três relatórios:
    como se tivesse produto — esse é o erro que não pode acontecer).
    É por isso que o critério de aprovação é RECALL = 1,0, não
    precision.
-3. Diagnóstico das caixas de ampola_vazia que ficaram sem detecção da
-   própria classe (FN), usando o mesmo casamento por classe da seção 2
-   (point a point confiável — sem ambiguidade de qual caixa é qual).
+3. Accuracy caixa-a-caixa (soma das duas classes), calculada por
+   casamento SEPARADO por classe (mesma lógica da seção 2, uma vez por
+   classe) — sem atribuição cruzada entre classes, que faria uma
+   previsão de uma classe "roubar" o pareamento de outra.
+4. Diagnóstico das caixas da classe crítica que ficaram sem detecção
+   da própria classe (FN), usando o mesmo casamento por classe da
+   seção 2 (ponto a ponto, sem ambiguidade de qual caixa é qual).
    Pra cada uma, reporta SEM decidir nada: quais previsões (de
    qualquer classe) se sobrepõem geometricamente àquela caixa
    específica, com que IoU e confiança — e salva a foto inteira
-   (contexto) + um recorte com zoom (pra identificar sem erro qual
-   ampola é, numa bandeja com dezenas delas).
-
-   Também reporta accuracy caixa-a-caixa (soma das duas classes),
-   calculada por casamento SEPARADO por classe (mesma lógica da seção
-   2, uma vez por classe) — não por atribuição cruzada entre classes,
-   que é o que causava o bug acima.
+   (contexto) + um recorte com zoom em final/modelos/<tipo>/diagnostico_erros/
+   (pra identificar sem erro qual embalagem é, numa bandeja com
+   dezenas delas).
 
 Script único para todos os tipos: --tipo aponta para final/modelos/<tipo>/,
 onde os resultados são salvos. Só roda depois do treinar.py daquele

@@ -1,7 +1,7 @@
 task: detect
 mode: train
-model: C:\Users\pedro\Documents\INSPER\SEM_08\BAUMER\Capstone\final\scripts_comuns\yolov8n.pt
-data: C:\Users\pedro\Documents\INSPER\SEM_08\BAUMER\Capstone\final\dataset_yolo\blister_992\data.yaml
+model: final\scripts_comuns\yolov8n.pt
+data: final\dataset_yolo\blister_992\data.yaml
 epochs: 200
 time: null
 patience: 100
@@ -12,7 +12,7 @@ save_period: -1
 cache: false
 device: cpu
 workers: 8
-project: C:\Users\pedro\Documents\INSPER\SEM_08\BAUMER\Capstone\final\modelos\blister_992
+project: final\modelos\blister_992
 name: treino_completo
 exist_ok: false
 pretrained: true
@@ -111,4 +111,4 @@ auto_augment: randaugment
 erasing: 0.4
 cfg: null
 tracker: tracktrack.yaml
-save_dir: C:\Users\pedro\Documents\INSPER\SEM_08\BAUMER\Capstone\final\modelos\blister_992\treino_completo
+save_dir: final\modelos\blister_992\treino_completo

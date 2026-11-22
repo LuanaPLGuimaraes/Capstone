@@ -1,4 +1,4 @@
-path: C:\Users\Administrador\Documents\8o Semestre\capstone\dataset_yolo
+path: intermediario/dataset_yolo
 train: images/train
 val: images/val
 names:

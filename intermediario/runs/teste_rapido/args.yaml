@@ -1,19 +1,19 @@
 task: detect
 mode: train
 model: yolov8n.pt
-data: dataset_yolo/data.yaml
-epochs: 100
+data: dataset_yolo\data.yaml
+epochs: 10
 time: null
-patience: 20
-batch: 8
+patience: 100
+batch: 16
 imgsz: 640
 save: true
 save_period: -1
 cache: false
 device: ''
 workers: 8
-project: runs/detect
-name: treino_completo
+project: runs
+name: teste_rapido
 exist_ok: false
 pretrained: true
 cls_remap: true
@@ -112,4 +112,4 @@ auto_augment: randaugment
 erasing: 0.4
 cfg: null
 tracker: tracktrack.yaml
-save_dir: C:\Users\Administrador\Documents\8o Semestre\capstone\runs\detect\runs\detect\treino_completo
+save_dir: intermediario\runs\teste_rapido

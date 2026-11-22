@@ -111,4 +111,4 @@ auto_augment: randaugment
 erasing: 0.4
 cfg: null
 tracker: tracktrack.yaml
-save_dir: C:\Users\pedro\Documents\INSPER\SEM_08\BAUMER\Capstone\runs\detect\blister_992
+save_dir: final\modelos\blister_992\treino_preliminar

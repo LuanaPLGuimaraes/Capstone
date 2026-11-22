@@ -1,35 +1,26 @@
 """
-FINAL — Inspeciona uma foto de bandeja: roda o modelo YOLO do tipo
-indicado, devolve a MESMA foto com caixas VERMELHAS só ao redor das
-embalagens vazias, e devolve as contagens (quantas embalagens no
-total, quantas vazias). É a peça que a função orquestradora (chamada
-pelo LabVIEW depois que ele tira e salva a foto) usa pra apontar pro
-operador quais embalagens parecem vazias.
+FINAL — Inspeciona uma foto de bandeja com um modelo em desenvolvimento:
+roda o modelo YOLO do tipo indicado, devolve a MESMA foto com caixas
+VERMELHAS só ao redor das embalagens vazias, e devolve as contagens
+(quantas embalagens no total, quantas vazias). Serve para testar um
+treino antes de copiá-lo para producao/ — a versão usada pelo LabVIEW
+é producao/inspecionar.py.
 
-Script genérico, igual ao organizar_dataset.py — não um por tipo como
-treinar.py/validar.py, porque a lógica aqui (carrega o modelo do tipo,
-desenha a classe crítica) é idêntica pra qualquer produto; só muda o
---tipo.
+Script genérico: a lógica (carregar o modelo do tipo, desenhar a
+classe crítica) é idêntica pra qualquer produto; só muda o --tipo.
+Por padrão usa final/modelos/<tipo>/treino_completo/weights/best.pt;
+outro treino pode ser escolhido com --pesos.
 
-PACOTE DE PRODUÇÃO: pra levar isso pro computador do LabVIEW, não
-precisa de organizar_dataset.py/treinar.py/validar.py nem das pastas de
-dataset — aquilo é ferramenta de desenvolvimento (treinar/validar o
-modelo). O `.pt` de cada tipo já carrega os nomes das classes dentro
-dele (gravados no treino) — não precisa levar o data.yaml nem o
-dataset_yolo/ pra isso. Basta por tipo: o arquivo `best.pt` + este
-script + `ultralytics`/`opencv-python` instalados.
-
-Uso como FUNÇÃO (pra importar na função orquestradora que o LabVIEW
-chama):
+Uso como FUNÇÃO:
     from inspecionar import inspecionar_imagem
     resultado = inspecionar_imagem("foto.jpg", tipo="ampola")
     resultado["caminho_saida"]     # imagem com as vazias marcadas
     resultado["total_detectado"]   # quantas embalagens no total
     resultado["total_vazias"]      # quantas são vazias
 
-Uso como SCRIPT (pra testar sozinho, sem LabVIEW):
-    python inspecionar.py --tipo ampola --imagem foto.jpg
-    python inspecionar.py --tipo ampola --imagem foto.jpg --conf-vazia 0.10 --saida resultado.jpg
+Uso como SCRIPT (a partir da raiz do repositório):
+    python final/scripts_comuns/inspecionar.py --tipo ampola --imagem foto.jpg
+    python final/scripts_comuns/inspecionar.py --tipo ampola --imagem foto.jpg --pesos final/modelos/ampola/treino_completo_v2/weights/best.pt
 
 Dois limiares de confiança, propositalmente diferentes:
 - --conf-vazia (default 0.05): BAIXO de propósito. Isso não é um

@@ -20,7 +20,7 @@ Etapas do algoritmo (cada uma vira uma imagem de debug, ver --debug):
   5. Conta os blobs finais = numero de ampolas detectadas.
 
 Uso:
-    python detectar_tampas.py --image foto.jpg --out resultado.png --debug
+    python -m intermediario.detectar_tampas --image foto.jpg --out resultado.png --debug
 
 Com --debug, tambem salva (prefixo = mesmo nome do --out):
     <out>_1_mascara_bruta.png     -> direto do threshold, antes de limpar

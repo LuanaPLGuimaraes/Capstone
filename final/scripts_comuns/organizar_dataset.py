@@ -24,12 +24,15 @@ diferente do que foi rotulado (os índices nos .txt são posicionais,
 então ordem errada = classe errada, sem erro nenhum na hora). Só passe
 --classes se quiser sobrescrever isso por algum motivo.
 
-Uso (rodando de dentro de final/scripts_comuns):
-    python organizar_dataset.py --input ../dataset/DATASET_ampola --out ../dataset_yolo/ampola --val-frac 0.2
-    python organizar_dataset.py --input ../dataset/DATASET_Blister_992 --out ../dataset_yolo/blister_992 --val-frac 0.2
+O nome da pasta de saída (final/dataset_yolo/<tipo>) é o --tipo que
+treinar.py e validar.py esperam depois.
+
+Uso (a partir da raiz do repositório):
+    python final/scripts_comuns/organizar_dataset.py --input final/dataset/DATASET_ampola --out final/dataset_yolo/ampola --val-frac 0.2
+    python final/scripts_comuns/organizar_dataset.py --input final/dataset/DATASET_Blister_992 --out final/dataset_yolo/blister_992 --val-frac 0.2
 
     # só se precisar forçar nomes diferentes do classes.txt:
-    python organizar_dataset.py --input ../dataset/DATASET_ampola --out ../dataset_yolo/ampola --classes ampola_vazia,ampola_com_produto
+    python final/scripts_comuns/organizar_dataset.py --input final/dataset/DATASET_ampola --out final/dataset_yolo/ampola --classes ampola_vazia,ampola_com_produto
 """
 import argparse
 import random
@@ -107,7 +110,6 @@ def main():
     n_val = max(1, round(len(pares) * args.val_frac))
     val_pares = pares[:n_val]
     train_pares = pares[n_val:]
-
 
     if out_dir.exists():
         shutil.rmtree(out_dir)

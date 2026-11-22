@@ -1,5 +1,5 @@
 """
-FASE 3: (TESTE 1 YOLO) Organizar o dataset ja rotulado (foto + .txt revisados no
+FASE YOLO — Organizar o dataset ja rotulado (foto + .txt revisados no
 LabelImg) em treino/validacao, na estrutura de pastas que o YOLO
 (ultralytics) espera pra treinar.
 
@@ -12,8 +12,8 @@ treino/validacao numa proporcao configuravel, e COPIA pra:
     <out>/labels/val/*.txt
     <out>/data.yaml           <- arquivo de config que o YOLO le pra treinar
 
-Uso:
-    python organizar_dataset_yolo.py --input dataset\\ampolas --out dataset_yolo --val-frac 0.2
+Uso (a partir da raiz do repositório):
+    python -m intermediario.organizar_dataset_yolo --input intermediario/dataset/ampolas --out intermediario/dataset_yolo --val-frac 0.2
 """
 import argparse
 import random

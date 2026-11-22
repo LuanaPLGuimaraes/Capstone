@@ -1,4 +1,4 @@
-# Ambiente completo de desenvolvimento (as três etapas do TCC).
+# Ambiente completo de desenvolvimento (as três etapas do Capstone).
 # Para instalar só uma etapa: pip install -r <etapa>/requirements.txt
 -r intermediario/requirements.txt
 -r final/requirements.txt

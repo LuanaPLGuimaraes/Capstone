@@ -1,8 +1,9 @@
 """
-PASSO 2.5 — Rodar detectar_ampolas.py em varias fotos de uma vez
+LOTE — Rodar o pipeline classico (tampa + ampola inteira) em todas as
+fotos de uma pasta, imprimindo a contagem de cada uma.
 
-Uso:
-    python processar_pasta.py --input dataset/ampolas/ --out resultados_ampolas/ --intensidade-media-max 27
+Uso (a partir da raiz do repositorio):
+    python -m intermediario.processar_pasta --input intermediario/dataset/ampolas --out resultados_ampolas --intensidade-media-max 27
 """
 import argparse
 from pathlib import Path
@@ -79,7 +80,7 @@ def main():
             pitch = medir_pitch(linhas, pitch_min=args.pitch_min, pitch_max=args.pitch_max)
         except ValueError:
             # nao deu pra medir o espacamento da grade nessa foto (ex: tampas
-            # demais faltando, ou parametros nao calibrados pra ela) 
+            # demais faltando, ou parametros nao calibrados pra ela)
             print(f"{img_path.name:40s} {len(boxes_tampa):>8d} {'SEM PITCH':>8s}")
             vis = img.copy()
             for (x1, y1, x2, y2) in boxes_tampa:

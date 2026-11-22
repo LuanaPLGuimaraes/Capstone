@@ -1,8 +1,8 @@
 r"""
 PRODUÇÃO — ponto de entrada que o LabVIEW chama via System Exec.vi.
 
-INTERFACE ACORDADA COM O LABVIEW (combinada com o time, não inventada
-aqui sozinho — se mudar de novo, atualiza os dois lados juntos):
+INTERFACE ACORDADA COM O LABVIEW (qualquer mudança aqui precisa ser
+feita também do lado do LabVIEW):
 
 Entrada: UM ÚNICO argumento posicional — o caminho completo da foto já
 salva pelo LabVIEW. Nada de --tipo, nada de --imagem nomeado.
@@ -20,7 +20,7 @@ decisão consciente pra não precisar mexer na chamada do LabVIEW toda
 vez que mudar de tipo.
 
 Saída: UMA ÚNICA LINHA no stdout, com um ";" depois de CADA um dos 3
-resultados (inclusive o último) — não é mais só uma palavra:
+resultados (inclusive o último):
 
     <total_detectado>;<total_vazias>;<status>;
 

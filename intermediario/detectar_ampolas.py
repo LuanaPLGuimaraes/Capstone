@@ -14,7 +14,7 @@ como ANCORA, e a regularidade da grade pra saber o tamanho da ampola.
      esquerda — confira visualmente na sua, pode ser o contrario).
 
 Uso:
-    python detectar_ampolas.py --image foto.jpg --out resultado_ampolas.png --pitch-direcao esquerda
+    python -m intermediario.detectar_ampolas --image foto.jpg --out resultado_ampolas.png --pitch-direcao esquerda
 """
 import argparse
 
