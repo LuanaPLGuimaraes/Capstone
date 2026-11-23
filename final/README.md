@@ -85,7 +85,12 @@ priorizar o recall, enquanto as demais embalagens são contadas com
 ## Treinos realizados
 
 Todos partem do `yolov8n.pt` com imagens de 640 px. Métricas da última época,
-lidas do `results.csv` de cada treino (conjunto de validação, todas as classes).
+lidas do `results.csv` de cada treino (conjunto de validação, todas as classes,
+no ponto de operação padrão do Ultralytics). Servem só para acompanhar a
+convergência do treino entre tentativas, não são os números finais usados no
+relatório: esses usam o limiar de confiança calibrado para a classe crítica
+(vazia) e estão na Tabela 2 do relatório e na seção Resultados do README
+principal.
 
 | Tipo | Treino | Épocas | Precision | Recall | mAP50 | mAP50-95 | Em produção |
 |---|---|---:|---:|---:|---:|---:|:---:|

@@ -58,16 +58,20 @@ estendido para cinco tipos de embalagem e depois integrado à linha.
 
 ## Resultados
 
-Métricas no conjunto de validação (20% das fotos de cada tipo) dos modelos
-atualmente em `producao/modelos/`, na última época de treino:
+Métricas da classe crítica (vazia) no limiar de confiança calibrado para cada
+tipo: o maior limiar que ainda garante recall = 1,0, ou o melhor ponto possível
+quando nenhum limiar atinge isso. São os mesmos números e o mesmo critério da
+Tabela 2 de validação final do relatório, não o ponto de operação padrão do
+Ultralytics usado durante o treino (esse está no histórico de treinos, em
+`final/README.md`, e serve só para acompanhar a convergência do treino).
 
-| Tipo | Fotos | Precision | Recall | mAP50 | mAP50-95 |
-|---|---:|---:|---:|---:|---:|
-| `ampola` | 83 | 0,999 | 1,000 | 0,995 | 0,816 |
-| `blister_992` | 31 | 0,996 | 1,000 | 0,995 | 0,968 |
-| `blister_bloco` | 55 | 0,997 | 1,000 | 0,995 | 0,876 |
-| `blister_org` | 69 | 0,997 | 1,000 | 0,995 | 0,889 |
-| `blister_org2` | 83 | 0,926 | 0,955 | 0,957 | 0,874 |
+| Tipo | Fotos | Limiar | Recall classe crítica | Precisão classe crítica | mAP50 geral | FN crítico |
+|---|---:|---|---:|---:|---:|---:|
+| `ampola` | 83 | ≥0,70 | 1,000 | 1,000 | 0,995 | 0 |
+| `blister_992` | 31 | ≥0,80 | 1,000 | 0,952 | 0,986 | 0 |
+| `blister_bloco` | 55 | ≥0,70 | 1,000 | 1,000 | 0,995 | 0 |
+| `blister_org` | 69 | ≥0,85 | 1,000 | 1,000 | 0,995 | 0 |
+| `blister_org2` | 83 | 0,05 (nenhum limiar atinge 1,0) | 0,929 | 0,929 | 0,966 | 1 |
 
 O histórico completo de treinos, a análise por limiar de confiança e os
 experimentos (como a correção flat-field do `blister_992`) estão em
