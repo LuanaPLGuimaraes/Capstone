@@ -138,3 +138,11 @@ versionados.
   vêm da mesma sessão de captura do treino; não há um conjunto de teste cego.
 - Os modelos dependem das condições de captura (câmera, iluminação e fundo da
   bandeja). Mudanças nesse arranjo exigem novas fotos e retreino.
+
+
+## Uso de IA generativa
+
+A ferramenta Claude (Anthropic) foi usada como apoio na redação dos textos
+deste README e na organização final da documentação do projeto. O
+desenvolvimento do código, os treinos e as validações foram feitos pela
+equipe.

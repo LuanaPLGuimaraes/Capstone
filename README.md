@@ -159,3 +159,11 @@ relatório, estão nos READMEs das pastas.
 - LabelImg (rotulagem)
 - LabVIEW (`System Exec.vi`) para câmera e interface do operador
 - API REST do ERP TOTVS Datasul
+
+
+## Uso de IA generativa
+
+A ferramenta Claude (Anthropic) foi usada como apoio na redação dos textos
+deste README e na organização final da documentação do projeto. O
+desenvolvimento do código, os treinos e as validações foram feitos pela
+equipe.
